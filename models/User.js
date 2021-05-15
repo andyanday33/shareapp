@@ -2,6 +2,15 @@ const { DataTypes, Model } = require('sequelize');
 const bcrypt = require('bcrypt');
 const sequelize = require('../middleware/sequelizeConnection');
 
+const encryptPasswords = async (users) => {
+    
+    await Promise.all(users.map(async (user) => {
+        const salt = await bcrypt.genSalt();
+        user.dataValues.password = await bcrypt.hash(user.dataValues.password, salt);
+    }));
+    
+}
+
 class User extends Model {
     static async login(username, password){
         const res = await this.findAll({
@@ -51,11 +60,17 @@ User.init({
     }
 }, {
     hooks: {
-        beforeCreate: (user, options) => {
-            user.password = user.password && user.password != "" ? bcrypt.hashSync(user.password, 10) : "";
+        beforeCreate: async (user, options) => {
+            const salt = await bcrypt.genSalt();
+            user.password = await bcrypt.hash(user.password, salt);
         },
         afterCreate: (user, options) => {
             console.log("New User was created!");
+        },
+        beforeBulkCreate: async (users, options) => {
+           
+            await encryptPasswords(users);
+            
         }
     },
     sequelize

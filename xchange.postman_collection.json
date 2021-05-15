@@ -1,0 +1,354 @@
+{
+	"info": {
+		"_postman_id": "ba9c2261-61dc-45ae-a09a-067adee28102",
+		"name": "xchange",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Signup",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\" : \"berkeanday\",\r\n    \"firstName\" : \"Berke Anday\",\r\n    \"lastName\" : \"Baloglu\",\r\n    \"email\": \"berke.andayb@gmail.com\",\r\n    \"password\" : \"test123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/signup",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"signup"
+							]
+						},
+						"description": "# Signup\nA new User and an unregistered Portfolio belongs to that user will be created on the db. \n\nReturns authentication token, you must provide this token on headers as \"Authentication\" to make trade operations."
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\" : \"nick\",\r\n    \"password\" : \"nick123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"login"
+							]
+						},
+						"description": "# Login\nReturns and authentication token if credentials given are correct.\n\nYou must provide this token on headers as \"Authentication\" to make trade operations."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Trade Operations",
+			"item": [
+				{
+					"name": "Transaction History",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6Im5pY2siLCJpYXQiOjE2MjExMTU5NDYsImV4cCI6MTYyMTEzMDM0Nn0.N0mU8jd3GzsCiHinJ8OSj22UQ7IFRyN1VESCVkB5VW4",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/trade-history",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"trade-history"
+							]
+						},
+						"description": "# GET Transaction History\n\nReturns \"BUY\" and \"SELL\" logs for an authenticated user. You must provide auth token with \"Authentication\" key on headers."
+					},
+					"response": []
+				},
+				{
+					"name": "Add Balance",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6Im5pY2siLCJpYXQiOjE2MjExMTU5NDYsImV4cCI6MTYyMTEzMDM0Nn0.N0mU8jd3GzsCiHinJ8OSj22UQ7IFRyN1VESCVkB5VW4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"amount\": 200\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/balance",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"balance"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						},
+						"description": "# Add Balance\nadds cash balance to User's account.\n\nCash Balance is used for BUY operations."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Balance",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6Im5pY2siLCJpYXQiOjE2MjExMTU5NDYsImV4cCI6MTYyMTEzMDM0Nn0.N0mU8jd3GzsCiHinJ8OSj22UQ7IFRyN1VESCVkB5VW4",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/balance",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"balance"
+							]
+						},
+						"description": "# GET Balance\n\nGets cash balance of the user logged in."
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Shares",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6Im5pY2siLCJpYXQiOjE2MjExMTU5NDYsImV4cCI6MTYyMTEzMDM0Nn0.N0mU8jd3GzsCiHinJ8OSj22UQ7IFRyN1VESCVkB5VW4",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/shares",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"shares"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						},
+						"description": "# GET Shares\n\nReturns every share with latest price from db."
+					},
+					"response": []
+				},
+				{
+					"name": "Get One Share",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6Im5pY2siLCJpYXQiOjE2MjExMTU5NDYsImV4cCI6MTYyMTEzMDM0Nn0.N0mU8jd3GzsCiHinJ8OSj22UQ7IFRyN1VESCVkB5VW4",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/share/STR",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"share",
+								"STR"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						},
+						"description": "# GET Share\n\nReturns specified share from db with latest price."
+					},
+					"response": []
+				},
+				{
+					"name": "Register Portfolio",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6Im5pY2siLCJpYXQiOjE2MjExMTU5NDYsImV4cCI6MTYyMTEzMDM0Nn0.N0mU8jd3GzsCiHinJ8OSj22UQ7IFRyN1VESCVkB5VW4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "file",
+							"file": {}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/register-portfolio",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"register-portfolio"
+							]
+						},
+						"description": "# Register Portfolio\n\nRegisters the portfolio of logged in user."
+					},
+					"response": []
+				},
+				{
+					"name": "Buy Share",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6Im5pY2siLCJpYXQiOjE2MjExMTU5NDYsImV4cCI6MTYyMTEzMDM0Nn0.N0mU8jd3GzsCiHinJ8OSj22UQ7IFRyN1VESCVkB5VW4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"symbol\": \"STR\",\r\n    \"amount\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/buy",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"buy"
+							]
+						},
+						"description": "# BUY Share\n\nAdds given amount of given share to user's portfolio. \n\nSubstacts amount times latest price from user's balance."
+					},
+					"response": []
+				},
+				{
+					"name": "Sell Share",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6Im5pY2siLCJpYXQiOjE2MjExMTU5NDYsImV4cCI6MTYyMTEzMDM0Nn0.N0mU8jd3GzsCiHinJ8OSj22UQ7IFRyN1VESCVkB5VW4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"symbol\": \"PYM\",\r\n    \"amount\": 10\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/sell",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"sell"
+							]
+						},
+						"description": "# SELL Share\n\nSubstracts given amount of given share from User's portfolio.\n\nDeletes share from User's portfolio if none left.\n\nAdds latest price * amount to User's balance"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

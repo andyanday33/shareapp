@@ -19,7 +19,21 @@ const handleErrors = (err) => {
     }
     //notnull violation errors
     //not null violation errors should be checked on the front end.
-    //email field should be checked on front end.
+    if (err.message.includes('userName')){
+        return "Username cannot be blank";
+    }
+    if (err.message.includes('firstNane')){
+        return "First Name cannot be blank";
+    }
+    if (err.message.includes('lastName')){
+        return "Last Name cannot be blank";
+    }
+    if (err.message.includes('email')){
+        return "Email cannot be blank";
+    }
+    if (err.message.includes('password')){
+        return "Password cannot be blank and must have a minimum lenght of 6";
+    }
     //password length should be checked on front end. (min 6 - max 128)
 
     // console.log(err);

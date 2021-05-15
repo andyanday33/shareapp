@@ -53,7 +53,7 @@ module.exports.add_balance = async (req, res) => {
         res.status(400).json({ error: "Amount cannot be negative or zero."});
     }}catch(err){
         console.error(err);
-        res.status(500).json({ error: "Something went wrong!"}); //DB server side problem
+        res.status(500).json({error: "An unexpected error occurred"}); //DB server side problem
     }
 }
 
@@ -71,10 +71,6 @@ module.exports.get_balance = async (req, res) => {
         }
     });
     res.status(200).json({ data: portfolio.Balance});
-}
-
-module.exports.post_share = async (req, res) => {
-
 }
 
 module.exports.buy = async (req, res) => {
@@ -97,12 +93,14 @@ module.exports.buy = async (req, res) => {
         });
         if (share == null){ //unregistered share provided
             res.status(400).json({error: 'Share given is not registered in our database'});
+        }else if (portfolio.isRegistered == false){
+            res.status(400).json({error: 'You can not buy shares with an unregistered portfolio'});
         }
         else if(portfolio.Balance < share.rate * req.body.amount){ //not enough balance
             res.status(400).json({error: 'insufficient funds'});
         }else{
             await portfolio.decrement({Balance: share.rate * req.body.amount});
-            await portfolio.addShare(share.id, {through: Portfolio_Share});
+            await portfolio.addShare(share.id, {through: Portfolio_Share}); //does not add if already exists.
             res.status(200).json({data: 'success!', portfolio});
             //increase amount on database
             Portfolio_Share.increment({amount: req.body.amount}, {
@@ -121,6 +119,7 @@ module.exports.buy = async (req, res) => {
         }
     }catch(err){
         console.error(err);
+        res.status(500).json({error: "An unexpected error occurred"});
     }
 }
 
@@ -145,6 +144,8 @@ module.exports.sell = async (req, res) => {
         });
         if(relatedShare == null){
             res.status(400).json({error: 'Share given is not registered to our database'});
+        }else if(portfolio.isRegistered == false){
+            res.status(400).json({error: 'You can not buy shares with an unregistered portfolio'});
         }
         else{
             const shareInPortfolio = await Portfolio_Share.findOne({
@@ -195,10 +196,48 @@ module.exports.sell = async (req, res) => {
 
     }catch(err){
         console.error(err);
+        res.status(500).json({error: "An unexpected error occurred"});
     }
     
 }
 
 module.exports.get_transaction_logs = async (req, res) => {
+    try{
+        const user = await User.findOne({
+            where: {
+                userName : req.user.userName
+            }
+        });
+        const logs = await Trade.findAll({
+            where: {
+                UserId: user.id
+            }
+        });
+        res.status(200).json({data: logs});
+    }catch(err) {
+        console.error(err);
+        res.status(500).json({error: "An unexpected error occurred"});
+    }
+}
 
+module.exports.register_portfolio = async (req, res) => {
+    try{
+
+        const user = await User.findOne({
+            where: {
+                userName: req.user.userName
+            }
+        });
+        const portfolio = await Portfolio.findOne({
+            where: {
+                UserId: user.id
+            }
+        });
+        portfolio.isRegistered = true;
+        portfolio.save();
+        res.status(200).json({data: "Success!"});
+    }catch(err){
+        console.error(err);
+        res.status(500).json({error: "An unexpected error occurred"});
+    }
 }

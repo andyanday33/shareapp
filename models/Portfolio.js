@@ -9,6 +9,10 @@ Portfolio.init({
     Balance: {
         type: DataTypes.FLOAT,
         defaultValue: 0
+    },
+    isRegistered: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
     }
 }, {sequelize});
 
